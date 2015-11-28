@@ -54,8 +54,9 @@ const ImageViewer = React.createClass({
     this._fetchImages();
     this.setInterval(()=> {
       var timeElapsed = this.state.timeElapsed;
-      if (this.props.speed > 0 && timeElapsed > 1000 / this.props.speed) {
-        this._selectNextImage();
+      var forward = this.props.speed > 0;
+      if (timeElapsed > Math.abs(1000 / this.props.speed)) {
+        this._selectNextImage(forward);
         timeElapsed = 0;
       }
       this.setState({
@@ -89,14 +90,19 @@ const ImageViewer = React.createClass({
     console.log(err);
   },
 
-  _selectNextImage() {
+  _selectNextImage(forward) {
     const {images, imageIdx} = this.state;
     if (images.length <= imageIdx + IMAGES_PER_LOAD) {
       this._fetchImages();
     }
-    if (images.length > this.state.imageIdx) {
+    if (forward && images.length > this.state.imageIdx) {
       this.setState({
         imageIdx: this.state.imageIdx + 1
+      });
+    }
+    if (!forward && this.state.imageIdx >= 0) {
+      this.setState({
+        imageIdx: this.state.imageIdx - 1
       });
     }
   },
@@ -110,7 +116,8 @@ const ImageViewer = React.createClass({
           <Image style={styles.image} source={{ uri: currentImage.uri }} />
         ): (
         <Text>
-          No more photos to show.
+          {imageIdx > 0 ? "No more photos to show."
+            : "You have reached the very beginning."}
         </Text>) }
       </View>
     );

@@ -26,7 +26,7 @@ var rapid = React.createClass({
   },
   _updateSpeed(value) {
     this.setState({
-      speed: Math.floor(value)
+      speed: Math.ceil(value)
     });
   },
   render() {
@@ -36,7 +36,7 @@ var rapid = React.createClass({
           <ImageViewer speed={this.state.speed} />
         </View>
         <View style={styles.sliderContainer}>
-          <SliderControl value={0} maximumValue={10} minimumValue={-2}
+          <SliderControl value={0} maximumValue={15} minimumValue={-5}
             onValueChange={this._updateSpeed} />
         </View>
       </View>
