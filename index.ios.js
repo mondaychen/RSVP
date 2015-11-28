@@ -11,8 +11,11 @@ var {
   Text,
   View,
 } = React;
-var ImageViewer = require("./image-viewer");
+
 var DeviceInfo = require("./device-info");
+var ImageViewer = require("./image-viewer");
+var SliderControl = require("./slider");
+
 
 var rapid = React.createClass({
   render: function() {
@@ -21,11 +24,8 @@ var rapid = React.createClass({
         <View style={styles.imageContainer}>
           <ImageViewer />
         </View>
-        <View style={styles.instructions}>
-          <Text style={styles.instructionsText}>
-            Press Cmd+R to reload,{'\n'}
-            Cmd+D or shake for dev menu
-          </Text>
+        <View style={styles.sliderContainer}>
+          <SliderControl value={0} maximumValue={10} minimumValue={-2} />
         </View>
       </View>
     );
@@ -36,20 +36,14 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   imageContainer: {
     flex: 1,
-    marginTop: 50 * DeviceInfo.pixel
+    marginTop: 20 * DeviceInfo.pixel,
   },
-  instructions: {
-    justifyContent: 'center', // vertical align
-    height: 100 * DeviceInfo.pixel
-  },
-  instructionsText: {
-    textAlign: 'center',
-    color: '#333333',
+  sliderContainer: {
+    height: 60 * DeviceInfo.pixel,
   },
 });
 

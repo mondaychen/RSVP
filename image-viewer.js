@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
     image: {
       flex: 1,
-      width: DeviceInfo.width - 10 * DeviceInfo.pixel,
+      width: DeviceInfo.width - 20 * DeviceInfo.pixel,
       height: DeviceInfo.height - 100 * DeviceInfo.pixel,
       resizeMode: Image.resizeMode.contain,
     }
