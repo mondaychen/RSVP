@@ -39,6 +39,9 @@ var SliderControl = React.createClass({
 
   onValueChange(value) {
     this.setState({value: value});
+    if (this.props.onValueChange) {
+      this.props.onValueChange(value);
+    }
   },
 
   render() {

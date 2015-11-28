@@ -18,14 +18,26 @@ var SliderControl = require("./slider");
 
 
 var rapid = React.createClass({
-  render: function() {
+  getInitialState() {
+    return {
+      imageIdx: 0,
+      speed: 0,
+    };
+  },
+  _updateSpeed(value) {
+    this.setState({
+      speed: Math.floor(value)
+    });
+  },
+  render() {
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <ImageViewer />
         </View>
         <View style={styles.sliderContainer}>
-          <SliderControl value={0} maximumValue={10} minimumValue={-2} />
+          <SliderControl value={0} maximumValue={10} minimumValue={-2}
+            onValueChange={this._updateSpeed} />
         </View>
       </View>
     );
