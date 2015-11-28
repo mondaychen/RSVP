@@ -2,6 +2,7 @@
 
 const React = require('react-native');
 const {
+  PropTypes,
   StyleSheet,
   Text,
   View,
@@ -10,7 +11,10 @@ const {
   CameraRoll,
   TouchableHighlight,
 } = React;
-var DeviceInfo = require("./device-info");
+
+const TimerMixin = require('react-timer-mixin/TimerMixin');
+
+const DeviceInfo = require("./device-info");
 
 const styles = StyleSheet.create({
     container: {
@@ -26,30 +30,49 @@ const styles = StyleSheet.create({
     }
 });
 
+const IMAGES_PER_LOAD = 5;
+
 const ImageViewer = React.createClass({
+
+  mixins: [TimerMixin],
+
+  propTypes: {
+    speed: PropTypes.number,
+  },
   
   getInitialState() {
     return {
       images: [],
       imageIdx: 0,
       lastCursor: undefined,
-      selected: '',
+      timeElapsed: 0,
+      endOfRoll: false,
     };
   },
 
   componentDidMount() {
     this._fetchImages();
+    this.setInterval(()=> {
+      var timeElapsed = this.state.timeElapsed;
+      if (this.props.speed > 0 && timeElapsed > 1000 / this.props.speed) {
+        this._selectNextImage();
+        timeElapsed = 0;
+      }
+      this.setState({
+        timeElapsed: timeElapsed + 20
+      });
+    }, 20);
   },
 
-  _fetchImages(callback) {
+  _fetchImages() {
+    if (this.state.endOfRoll) {
+      return;
+    }
     const fetchParams = {
-      first: 2,
+      first: IMAGES_PER_LOAD,
       after: this.state.lastCursor,
     };
     CameraRoll.getPhotos(fetchParams, this.storeImages, this.logImageError);
-    if(callback) {
-      callback();
-    }
   },
 
   storeImages(data) {
@@ -58,6 +81,7 @@ const ImageViewer = React.createClass({
     this.setState({
       images: this.state.images.concat(images),
       lastCursor: data.page_info.end_cursor,
+      endOfRoll: assets.length === 0,
     });
   },
 
@@ -65,19 +89,16 @@ const ImageViewer = React.createClass({
     console.log(err);
   },
 
-  onTapImage() {
-    const {images, imageIdx} = this.state;
-    if (images.length > imageIdx + 1) {
-      this._selectNextImage();
-    } else {
-      this._fetchImages(this._selectNextImage);
-    }
-  },
-
   _selectNextImage() {
-    this.setState({
-      imageIdx: this.state.imageIdx + 1
-    });
+    const {images, imageIdx} = this.state;
+    if (images.length <= imageIdx + IMAGES_PER_LOAD) {
+      this._fetchImages();
+    }
+    if (images.length > this.state.imageIdx) {
+      this.setState({
+        imageIdx: this.state.imageIdx + 1
+      });
+    }
   },
 
   render() {
@@ -86,9 +107,7 @@ const ImageViewer = React.createClass({
     return (
       <View style={styles.container}>
         { currentImage ? (
-          <TouchableHighlight activeOpacity={0.5} onPress={this.onTapImage}>
-            <Image style={styles.image} source={{ uri: currentImage.uri }} />
-          </TouchableHighlight>
+          <Image style={styles.image} source={{ uri: currentImage.uri }} />
         ): (
         <Text>
           No more photos to show.

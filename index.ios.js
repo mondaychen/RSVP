@@ -33,7 +33,7 @@ var rapid = React.createClass({
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <ImageViewer />
+          <ImageViewer speed={this.state.speed} />
         </View>
         <View style={styles.sliderContainer}>
           <SliderControl value={0} maximumValue={10} minimumValue={-2}
