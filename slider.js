@@ -49,7 +49,6 @@ var SliderControl = React.createClass({
         <Slider {...this.props}
           value={this.state.value}
           onValueChange={this.onValueChange} />
-        <Text>Value: {this.state.value}</Text>
       </View>
     );
   }
@@ -58,6 +57,7 @@ var SliderControl = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 5 * DeviceInfo.pixel,
     marginLeft: 10 * DeviceInfo.pixel,
     marginRight: 10 * DeviceInfo.pixel,
     alignItems: 'stretch',

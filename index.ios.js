@@ -55,7 +55,7 @@ var styles = StyleSheet.create({
     marginTop: 20 * DeviceInfo.pixel,
   },
   sliderContainer: {
-    height: 60 * DeviceInfo.pixel,
+    height: 65 * DeviceInfo.pixel,
   },
 });
 
