@@ -57,7 +57,7 @@ var rapid = React.createClass({
           </Text>
         </View>
         <View style={styles.sliderContainer}>
-          <SliderControl value={0} maximumValue={15} minimumValue={-5}
+          <SliderControl value={0} maximumValue={15} minimumValue={-7}
             onValueChange={this._updateSpeed} />
         </View>
       </View>
