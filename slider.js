@@ -1,8 +1,8 @@
 'use strict';
 
-var React = require('react-native');
+const React = require('react-native');
 
-var {
+const {
   PropTypes,
   StyleSheet,
   // basic components
@@ -10,12 +10,16 @@ var {
   View,
 } = React;
 
-var Slider = require('react-native-slider');
+const TimerMixin = require('react-timer-mixin/TimerMixin');
 
-var DeviceInfo = require("./device-info");
+const Slider = require('react-native-slider');
+
+const DeviceInfo = require("./device-info");
 
 
-var SliderControl = React.createClass({
+const SliderControl = React.createClass({
+
+  mixins: [TimerMixin],
 
   propTypes: {
     value: PropTypes.number,
@@ -43,12 +47,32 @@ var SliderControl = React.createClass({
     }
   },
 
+  onSlidingStart() {
+    this.clearInterval(this._timerID);
+  },
+
+  onSlidingComplete() {
+    this._timerID = this.setInterval(()=> {
+      let absValue = Math.abs(this.state.value);
+      const sign = this.state.value > 0 ? 1 : -1;
+      if (absValue < 0.51) {
+        this.onValueChange(0);
+        this.clearInterval(this._timerID);
+        return;
+      }
+      absValue -= 0.5 * Math.max(1, Math.log(absValue));
+      this.onValueChange(sign * absValue);
+    }, 10);
+  },
+
   render() {
     return (
       <View style={styles.container}>
         <Slider {...this.props}
           value={this.state.value}
-          onValueChange={this.onValueChange} />
+          onValueChange={this.onValueChange}
+          onSlidingStart={this.onSlidingStart}
+          onSlidingComplete={this.onSlidingComplete} />
       </View>
     );
   }
