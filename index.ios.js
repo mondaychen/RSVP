@@ -3,8 +3,9 @@
  */
 'use strict';
 
-var React = require('react-native');
-var {
+const _ = require('lodash');
+const React = require('react-native');
+const {
   AppRegistry,
   StyleSheet,
   // basic components
@@ -12,12 +13,12 @@ var {
   View,
 } = React;
 
-var DeviceInfo = require("./device-info");
-var ImageViewer = require("./image-viewer");
-var SliderControl = require("./slider");
+const DeviceInfo = require("./device-info");
+const ImageViewer = require("./image-viewer");
+const SliderControl = require("./slider");
 
 
-var rapid = React.createClass({
+const rapid = React.createClass({
   getInitialState() {
     return {
       imageIdx: 0,
@@ -69,7 +70,7 @@ var rapid = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
