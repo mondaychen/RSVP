@@ -1,5 +1,7 @@
 'use strict';
 
+const _ = require('lodash');
+
 const React = require('react-native');
 const {
   PropTypes,
@@ -9,7 +11,7 @@ const {
   ScrollView,
   Image,
   CameraRoll,
-  TouchableHighlight,
+  TouchableOpacity,
 } = React;
 
 const TimerMixin = require('react-timer-mixin/TimerMixin');
@@ -38,6 +40,14 @@ const ImageViewer = React.createClass({
 
   propTypes: {
     speed: PropTypes.number,
+    onPress: PropTypes.function,
+  },
+
+  getDefaultProps() {
+    return {
+      speed: 0,
+      onPress: _.noop
+    }
   },
   
   getInitialState() {
@@ -107,13 +117,19 @@ const ImageViewer = React.createClass({
     }
   },
 
+  _onPressButton() {
+    this.props.onPress();
+  },
+
   render() {
     const {images, imageIdx} = this.state;
     const currentImage = images[imageIdx]; // undefined if imageIdx out of bound
     return (
       <View style={styles.container}>
         { currentImage ? (
-          <Image style={styles.image} source={{ uri: currentImage.uri }} />
+          <TouchableOpacity onPress={this._onPressButton} activeOpacity={0.7}>
+            <Image style={styles.image} source={{ uri: currentImage.uri }} />
+          </TouchableOpacity>
         ): (
         <Text>
           {imageIdx > 0 ? "No more photos to show."

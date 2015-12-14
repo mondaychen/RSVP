@@ -29,8 +29,11 @@ var rapid = React.createClass({
       speed: Math.ceil(value)
     });
   },
+  pressImage() {
+    console.log("image")
+  },
   render() {
-    let detailText = "Playing Paused";
+    let detailText = "Paused";
     if (this.state.speed !== 0) {
       let direction = this.state.speed > 0 ? 'forward' : 'backwards';
       detailText = `Images playing ${direction} at ${Math.abs(this.state.speed)} photos per second`;
@@ -38,7 +41,8 @@ var rapid = React.createClass({
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <ImageViewer speed={this.state.speed} />
+          <ImageViewer speed={this.state.speed}
+            onPress={this.pressImage} />
         </View>
         <View style={styles.statusContainer}>
           <View style={styles.status}>
