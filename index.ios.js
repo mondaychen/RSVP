@@ -3,7 +3,6 @@
  */
 'use strict';
 
-const _ = require('lodash');
 const React = require('react-native');
 const {
   AppRegistry,
@@ -17,6 +16,7 @@ const DeviceInfo = require("./device-info");
 const ImageViewer = require("./image-viewer");
 const SliderControl = require("./slider");
 
+const Statistics = require("./statistics");
 
 const rapid = React.createClass({
   getInitialState() {
@@ -29,9 +29,10 @@ const rapid = React.createClass({
     this.setState({
       speed: Math.ceil(value)
     });
+    Statistics.updateSpeed(Math.ceil(value));
   },
   pressImage() {
-    console.log("image")
+    Statistics.print();
   },
   render() {
     let detailText = "Paused";
