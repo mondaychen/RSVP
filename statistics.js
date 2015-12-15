@@ -6,6 +6,8 @@ let lastSpeed;
 let lastTimeStamp;
 
 const speedDuration = {};
+const speedHistory = [];
+const durationHistory = [];
 
 const Statistics = {
   updateSpeed: function (speed) {
@@ -24,6 +26,8 @@ const Statistics = {
     }
     // count duration
     speedDuration[lastSpeed] = (speedDuration[lastSpeed] || 0) + (now - lastTimeStamp);
+    speedHistory.push(lastSpeed);
+    durationHistory.push(now - lastTimeStamp);
     lastSpeed = speed;
     lastTimeStamp = now;
   },
@@ -39,6 +43,8 @@ const Statistics = {
     _.each(details, function(o) {
       console.log(o);
     });
+    console.log(speedHistory);
+    console.log(durationHistory);
   }
 }
 
